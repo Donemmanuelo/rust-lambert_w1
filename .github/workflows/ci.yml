@@ -27,9 +27,9 @@ jobs:
             push: true
             platforms: linux/amd64,linux/arm64
             tags: |
-              ghcr.io/${{vars.REPOSITORY}/lambert_w:sha-${{ github.sha }}
-              ghcr.io/${{vars.REPOSITORY}/lambert_w:branch-${{ github.ref_name }}
-              ghcr.io/${{vars.REPOSITORY}/lambert_w:latest
+              ghcr.io/${{vars.REPOSITORY}}/lambert_w:sha-${{ github.sha }}
+              ghcr.io/${{vars.REPOSITORY}}/lambert_w:branch-${{ github.ref_name }}
+              ghcr.io/${{vars.REPOSITORY}}/lambert_w:latest
       -
         name: Slim Docker image
         uses: kitabisa/docker-slim-action@v1
