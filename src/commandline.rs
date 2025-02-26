@@ -1,5 +1,5 @@
 use structopt::StructOpt;
-#[derive(StructOpt, Debug)]
+#[derive(StructOpt)]
 pub struct LambertArgs {
     #[structopt(short, long)]
     pub x: f64,
