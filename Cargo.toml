@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rustfmt = "0.10.0" 
+rustfmt-nightly = "1.4.21"
 structopt = "0.3"
 log = "0.4"
 env_logger = "0.9"
