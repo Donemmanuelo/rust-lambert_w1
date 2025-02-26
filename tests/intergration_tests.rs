@@ -1,5 +1,3 @@
-
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -24,22 +22,19 @@ mod tests {
         info!("The principle branch w(0)");
         assert_eq!(0.0, 0.0);
     }
-
     #[test]
     fn lambert_w() {
         init();
 
         info!("lambert a value less than -1/e");
         assert_eq!(-0.2, -0.25917110181907377);
-}
+    }
 
     #[test]
-    fn lambert_w() {
+    fn lambert_w_larger_val() {
         init();
 
         info!("lambert for large values");
-        assert_eq!(10000000000000000000000000000, 60.371859509617295);
+        assert_eq!(10000000000000000000000000000.0, 60.371859509617295);
     }
-
-  
 }
