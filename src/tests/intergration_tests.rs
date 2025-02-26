@@ -10,26 +10,36 @@ mod tests {
     }
 
     #[test]
-    fn lambert_w() {
+    fn lambert_w_pos_input() {
         init();
 
-        info!("can log from the test too");
+        info!("lambert for values positive values");
         assert_eq!(1.0, 0.56714329);
     }
 
+    #[test]
+    fn lambert_w_principal_branch() {
+        init();
+
+        info!("The principle branch w(0)");
+        assert_eq!(0.0, 0.0);
+    }
+
+    #[test]
+    fn lambert_w() {
+        init();
+
+        info!("lambert a value less than -1/e");
+        assert_eq!(-0.2, -0.25917110181907377);
+}
+
+    #[test]
+    fn lambert_w() {
+        init();
+
+        info!("lambert for large values");
+        assert_eq!(10000000000000000000000000000, 60.371859509617295);
+    }
+
   
-}/* 
-use text_placeholder::Template;
-#[cfg(feature = "std")]
-use std::collections::HashMap;
-#[cfg(not(feature = "std"))]
-use hashbrown::HashMap;
-
-let default_template = Template::new("Hello {{first}} {{second}}!");
-
-let mut table = HashMap::new();
-table.insert("first", "text");
-table.insert("second", "placeholder");
-
-assert_eq!(default_template.fill_with_hashmap(&table), "Hello text placeholder!");
-*/
+}

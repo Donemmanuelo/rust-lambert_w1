@@ -1,6 +1,6 @@
 mod commandline;
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, Ok, Result};
 use std::f64;
 use log::{debug, info, warn};
 
@@ -26,14 +26,28 @@ fn lambert_w(x: f64) -> Result<f64> {
     if x < -1.0 / f64::consts::E {
         return Err(anyhow!("Input must be greater than or equal to -1/e"));
     }
+        let tolerance = 1e-10;
 
-    let mut w = x;
-    for _ in 0..100 {
-        let w_next = w - (w * f64::exp(w) - x) / (f64::exp(w) + w * f64::exp(w));
-        if (w_next - w).abs() < 1e-10 {
-            return Ok(w_next);
+let mut w = 256.0; // Initial guess
+        let mut delta = f64::INFINITY;
+        let mut  w_old= 0.0;
+        while delta.abs() > tolerance {
+            delta = w - w_old;
+
+            w_old = w;
+            w = w - (w * f64::exp(w) - x) / (f64::exp(w)  + w * f64::exp(w) );
         }
-        w = w_next;
-    }
-    Err(anyhow!("Failed to converge"))
+
+        Ok(w)
+}
+#[cfg(test)]
+mod test {
+    use anyhow::Ok;
+
+#[test]
+fn test_placeholder(){
+  use crate::lambert_w;
+  let x = -1.0;
+  assert!(matches!(lambert_w(x), Err(_)));
+}
 }
