@@ -28,7 +28,7 @@ jobs:
       - run: cargo clippy --all-targets --all-features
 
   docker:
-    name: Build and push Docker image
+    needs: build_and_test
     runs-on: ubuntu-latest
     permissions:
      packages: write
