@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rust: latest as builder
+FROM rust:latest as builder
 
 WORKDIR /app
 # Copy the source code into the container.
@@ -9,7 +9,7 @@ COPY . .
 RUN cargo build --release
 
 # Use a minimal base image to reduce final image size.
-FROM debian:buster-slim
+FROM debian:latest
 
 WORKDIR /app
 # Copy the binary from the builder stage.
