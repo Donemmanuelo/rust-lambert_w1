@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rust:latest as builder
+FROM rust:latest As builder
 
 WORKDIR /app
 # Copy the source code into the container.
