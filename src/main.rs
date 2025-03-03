@@ -39,15 +39,7 @@ fn lambert_w(x: f64) -> Result<f64> {
 
     Ok(w)
 }
-#[cfg(test)]
-mod test {
-
-    #[test]
-    fn test_placeholder() {
-        use crate::lambert_w;
-        let x = -1.0;
-        assert!(matches!(lambert_w(x), Err(_)));
-    }
+   
 }
 #[cfg(test)]
 mod tests {
@@ -88,5 +80,11 @@ mod tests {
 
         info!("lambert for large values");
         assert_eq!(lambert_w(10000000000000000000000000000.0).unwrap(), 60.371859509617295);
+    }
+     #[test]
+    fn test_placeholder() {
+        use crate::lambert_w;
+        let x = -1.0;
+        assert_eq!(matches!(lambert_w(x), Err(_)));
     }
 }
