@@ -38,7 +38,6 @@ fn lambert_w(x: f64) -> Result<f64> {
 
     Ok(w)
 }
-   
 
 #[cfg(test)]
 mod tests {
@@ -78,6 +77,9 @@ mod tests {
         init();
 
         info!("lambert for large values");
-        assert_eq!(lambert_w(10000000000000000000000000000.0).unwrap(), 60.371859509617295);
+        assert_eq!(
+            lambert_w(10000000000000000000000000000.0).unwrap(),
+            60.371859509617295
+        );
     }
 }
