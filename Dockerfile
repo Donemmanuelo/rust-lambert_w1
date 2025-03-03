@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rust:latest as builder
+FROM rust:1.70 as builder
 
 WORKDIR /app
 # Copy the source code into the container.
@@ -9,13 +9,11 @@ COPY . .
 RUN cargo build --release
 
 # Use a minimal base image to reduce final image size.
-FROM debian:latest
+FROM debian:buster-slim
 
 WORKDIR /app
 # Copy the binary from the builder stage.
 COPY --from=builder /app/target/release/rust_lambert_w /app/rust_lambert_w
 
 # Set the startup command.
-CMD ["/app/rust_lambert_w"]
-# Entrypoint to take argument
-ENTRYPOINT ["/app/rust_lambert_w"]
+CMD ["/app/lambert_w"]
