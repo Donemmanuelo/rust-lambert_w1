@@ -13,9 +13,9 @@ FROM debian:latest
 
 WORKDIR /app
 # Copy the binary from the builder stage.
-COPY --from=builder /app/target/release/lambert_w /app/lambert_w
+COPY --from=builder /app/target/release/rust_lambert_w /app/rust_lambert_w
 
 # Set the startup command.
-CMD ["/app/lambert_w"]
+CMD ["/app/rust_lambert_w"]
 # Entrypoint to take argument
-ENTRYPOINT ["/app/lambert_w"]
+ENTRYPOINT ["/app/rust_lambert_w"]
