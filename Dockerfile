@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rust:1.70 as builder
+FROM rust as builder
 
 WORKDIR /app
 # Copy the source code into the container.
@@ -13,9 +13,9 @@ FROM debian:buster-slim
 
 WORKDIR /app
 # Copy the binary from the builder stage.
-COPY --from=builder /app/target/release/lambert_w .
+COPY --from=builder /app/target/release/lambert_w /app/lambert_w
 
 # Set the startup command.
-CMD ["./lambert_w"]
+CMD ["/app/lambert_w"]
 # Entrypoint to take argument
-ENTRYPOINT [" -- --x "]
+ENTRYPOINT ["/app/lambert_w"]
