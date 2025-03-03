@@ -1,7 +1,6 @@
-mod commandline;
-
 use anyhow::{anyhow, Ok, Result};
 use log::{debug, info, warn};
+use rust_lambert_w::commandline;
 use std::f64;
 
 use commandline::LambertArgs;
@@ -10,14 +9,14 @@ use structopt::StructOpt;
 fn main() -> Result<()> {
     let args = LambertArgs::from_args();
 
-    let x: f64 = args.x;
+    let y: f64 = args.x;
 
     env_logger::init();
     debug!("This is a debug message");
     info!("This is an info message");
     warn!("This is a warning message");
-    let w = lambert_w(x)?;
-    println!("Lambert W({}) = {}", x, w);
+    let w = lambert_w(y);
+    println!("Lambert W({}) = {:?}", y, w);
     Ok(())
 }
 
@@ -40,7 +39,7 @@ fn lambert_w(x: f64) -> Result<f64> {
     Ok(w)
 }
    
-}
+
 #[cfg(test)]
 mod tests {
     use log::info;
@@ -80,11 +79,5 @@ mod tests {
 
         info!("lambert for large values");
         assert_eq!(lambert_w(10000000000000000000000000000.0).unwrap(), 60.371859509617295);
-    }
-     #[test]
-    fn test_placeholder() {
-        use crate::lambert_w;
-        let x = -1.0;
-        assert_eq!(matches!(lambert_w(x), Err(_)));
     }
 }

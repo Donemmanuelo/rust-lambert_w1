@@ -1,5 +1,5 @@
 [package]
-name = "rust-lambert_w"
+name = "rust_lambert_w"
 version = "0.1.0"
 edition = "2021"
 
@@ -13,15 +13,19 @@ assert_cmd = "2.0"
 predicates = "3.1.0"
 rand = "0.9.0"
 cargo-binutils = "0.3"
-
 serde = { version = "1", optional = true }         
 csv = { version = "1.3.1", optional = true }       
 crossbeam = { version = "0.8.4", optional = true }   
 num_cpus = { version = "1", optional = true }     
-
-[lib]
-name = "main"
-path = "src/main.rs"
+cargo-bin = "0.3.0"  
 
 [features]
 build-binary = ["serde", "csv", "crossbeam", "num_cpus"]
+
+[[bin]]
+name = "rust_lambert_w"
+path = "src/main.rs"
+
+[lib]
+name = "rust_lambert_w"
+path = "src/lib.rs"
