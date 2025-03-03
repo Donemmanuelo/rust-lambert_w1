@@ -9,7 +9,7 @@ COPY . .
 RUN cargo build --release
 
 # Use a minimal base image to reduce final image size.
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 WORKDIR /app
 # Copy the binary from the builder stage.
