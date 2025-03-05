@@ -2,87 +2,87 @@ name: CI
 on: 
  push:
   
-  jobs:
-    build_and_test:
-      name: Rust project - latest
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          toolchain:
-            - stable
+jobs:
+  build_and_test:
+    name: Rust project - latest
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+  
+      - uses: actions/checkout@v4
+      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - run: rustup component add rustfmt
+      - run: cargo build --verbose
+      - run: cargo test --verbose
+      - run: cargo fmt --all -- --check
+
+  clippy_check:
+    name: Clippy check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
+      - run: cargo clippy --all-targets --all-features
+  docker:
+      
+      runs-on: ubuntu-22.04
+      permissions:
+        packages: write
+      
+
       steps:
-        - uses: actions/checkout@v4
-        - name: Setup Rust
-          uses: dtolnay/rust-toolchain@stable
-  
-        - name: Cache cargo registry and build
-          uses: actions/cache@v4
-          with:
-            path: |
-              ~/.cargo/bin/
-              ~/.cargo/registry/index/
-              ~/.cargo/registry/cache/
-              ~/.cargo/git/db/
-              target
-            key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-cargo-
-    
-        - uses: actions/checkout@v4
-        - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
-        - run: rustup component add rustfmt
-        - run: cargo build --verbose
-        - run: cargo test --verbose
-        - run: cargo fmt --all -- --check
-  
-    clippy_check:
-      name: Clippy check
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - run: rustup update stable && rustup default stable
-        - run: cargo clippy --all-targets --all-features
-    docker:
-        
-        runs-on: ubuntu-22.04
-        permissions:
-          packages: write
-        
-  
-        steps:
-        # checkout the repository code
-          - name: checkout code 
-            uses: actions/checkout@v3
-  
-          - name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@v2
-          - name: Login to Container Registry
-            uses: docker/login-action@v2
-            with:  
-              registry: ghcr.io 
-              username: ${{ github.actor}}
-              password: ${{ secrets.GITHUB_TOKEN}}
-              
-          - name: Build and push Docker image
-            uses: docker/build-push-action@v2
-            with:
-              context: .
-              push: true
-              platforms: linux/amd64,linux/arm64
-              tags: |
-                ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:sha-${{ github.sha }}
-                ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:branch-${{ github.ref_name }}
-                ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:latest
-  
-          - name: Slim Docker image
-            uses: kitabisa/docker-slim-action@v1
-            env:
-              DSLIM_HTTP_PROBE: "false"  # Disables HTTP probing during slimming
-            with:
-              target: ghcr.io/${{ vars.REPOSITORY }}/team_work-lambert_w_function:latest  # Target image to slim
-              tag: slim  # Suffix for the slimmed image tag
-  
-          - name: Push slimmed Docker image
-            run: |
-              docker push ghcr.io/${{ vars.REPOSITORY }}/area-image:slim
+      # checkout the repository code
+        - name: checkout code 
+          uses: actions/checkout@v3
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v2
+        - name: Login to Container Registry
+          uses: docker/login-action@v2
+          with:  
+            registry: ghcr.io 
+            username: ${{ github.actor}}
+            password: ${{ secrets.GITHUB_TOKEN}}
             
+        - name: Build and push Docker image
+          uses: docker/build-push-action@v2
+          with:
+            context: .
+            push: true
+            platforms: linux/amd64,linux/arm64
+            tags: |
+              ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:sha-${{ github.sha }}
+              ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:branch-${{ github.ref_name }}
+              ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:latest
+
+        - name: Slim Docker image
+          uses: kitabisa/docker-slim-action@v1
+          env:
+            DSLIM_HTTP_PROBE: "false"  # Disables HTTP probing during slimming
+          with:
+            target: ghcr.io/${{ vars.REPOSITORY }}/team_work-lambert_w_function:latest  # Target image to slim
+            tag: slim  # Suffix for the slimmed image tag
+
+        - name: Push slimmed Docker image
+          run: |
+            docker push ghcr.io/${{ vars.REPOSITORY }}/area-image:slim
+          
