@@ -1,9 +1,6 @@
 name: CI
 on:
-  push:
-    branches:
-    - main
-    
+  pull_request:
 jobs:
   build_and_test:
     name: Rust project - latest
@@ -75,11 +72,6 @@ jobs:
               ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:sha-${{ github.sha }}
               ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:branch-${{ github.ref_name }}
               ghcr.io/${{ vars.REPOSITORY  }}/team_work-lambert_w_function:latest
-  
-              
-        - name: Build Docker image
-          run: |
-             docker build -t ghcr.io/${{ vars.REPOSITORY }}/area-image:latest .
 
         - name: Slim Docker image
           uses: kitabisa/docker-slim-action@v1
