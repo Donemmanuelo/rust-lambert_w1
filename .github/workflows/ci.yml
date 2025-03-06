@@ -47,8 +47,8 @@ jobs:
         - uses: actions/checkout@v4
         - run: rustup update stable && rustup default stable
         - run: cargo clippy --all-targets --all-features
-    docker:
         
+    docker:
       needs: build_and_test  # Fixed job dependency
       runs-on: ubuntu-latest
       permissions:
