@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rust:latest As builder
+FROM rust:latest as builder
 
 WORKDIR /app
 # Copy the source code into the container.
@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=builder /app/target/release/rust_lambert_w /app/rust_lambert_w
 
 # Set the startup command.
-CMD ["/app/lambert_w"]
+CMD ["/app/rust_lambert_w"]
