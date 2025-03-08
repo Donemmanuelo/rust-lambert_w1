@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        toolchain:
-          - stable
+        architecture: [amd64, arm64]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Rust
@@ -74,11 +73,11 @@ jobs:
             with:
               context: .
               push: true
-              platforms: linux/amd64,linux/arm64
               tags: |
                 ghcr.io/${{ secrets.TOKEN  }}/team_work-lambert_w_function:sha-${{ github.sha }}
                 ghcr.io/${{ secrets.TOKEN   }}/team_work-lambert_w_function:branch-${{ github.ref_name }}
                 ghcr.io/${{ secrets.TOKEN   }}/team_work-lambert_w_function:latest
+              platform: linux/${{ matrix.architecture }}
 
           - name: Slim Docker image
             uses: kitabisa/docker-slim-action@v1
